@@ -14,7 +14,33 @@ Recharts (grafiek), Lucide (iconen) en React Router (navigatie).
 ```bash
 cd wk2026
 npm install      # dependencies installeren (eenmalig)
-npm run dev      # dev-server starten → http://localhost:5173
+npm run dev      # dev-server starten → http://localhost:5173/wk2026/
+```
+
+> De app draait onder het subpad `/wk2026/` (zie `base` in `vite.config.ts`), zowel lokaal als
+> online op GitHub Pages.
+
+## 🌐 Live online
+
+De app staat gepubliceerd op GitHub Pages:
+
+**https://tah2912.github.io/wk2026/**
+
+Deze link werkt op elk apparaat (laptop, tablet, tv, telefoon) en kun je doorsturen naar je vrienden.
+
+> **Let op — data is lokaal per apparaat.** Schema, poules en knock-out zijn voor iedereen
+> hetzelfde, maar uitslagen/vrienden/pools die je invoert worden in de browser van dát apparaat
+> bewaard (localStorage) en synchroniseren niet automatisch met anderen. Wil je een ingevulde pool
+> delen? Gebruik **Instellingen → Export JSON** en laat de ander **Import JSON** doen.
+
+### De live site later bijwerken
+
+Na een wijziging in de code:
+
+```bash
+npm run build                       # bouwt opnieuw naar docs/
+git add -A && git commit -m "update"
+git push                            # GitHub Pages herbouwt automatisch (~1 min)
 ```
 
 ## 2. Builden
