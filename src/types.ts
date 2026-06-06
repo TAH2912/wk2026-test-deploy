@@ -44,6 +44,26 @@ export type Group = {
   teams: string[];
 };
 
+export type PlayerPosition = "GK" | "DF" | "MF" | "FW";
+
+export type Player = {
+  name: string;
+  position: PlayerPosition;
+  club: string;
+  caps: number;
+  goals: number;
+};
+
+export type Squad = {
+  /** Slug voor gebruik in routes/keys, bv. "brazil". */
+  id: string;
+  team: string;
+  confederation?: string;
+  group?: string;
+  squadSize: number;
+  players: Player[];
+};
+
 export type Friend = {
   id: string;
   name: string;

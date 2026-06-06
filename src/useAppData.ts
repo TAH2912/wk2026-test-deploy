@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { baseGroups, baseMatches, baseTeams } from "./data/mappers";
+import { baseGroups, baseMatches, baseSquads, baseTeams } from "./data/mappers";
 import type { Friend, MatchOverride, PredictionPool } from "./types";
 import { mergeMatchOverrides } from "./utils/matches";
 import {
@@ -82,6 +82,7 @@ export const useAppData = () => {
     matches,
     teams: baseTeams,
     groups: baseGroups,
+    squads: baseSquads,
     matchOverrides,
     friends,
     pools,

@@ -1,15 +1,16 @@
-import { BarChart3, CalendarDays, Home, Medal, Settings, Shield, Swords, Trophy, Users } from "lucide-react";
+import { BarChart3, CalendarDays, Flag, Home, Medal, Settings, Shield, Swords, Trophy, Users } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const items = [
-  { to: "/dashboard", label: "Dashboard", icon: Home },
-  { to: "/schedule", label: "Speelschema", icon: CalendarDays },
-  { to: "/groups", label: "Poules", icon: BarChart3 },
-  { to: "/knockout", label: "Knock-out", icon: Swords },
-  { to: "/pool", label: "Pool", icon: Trophy },
-  { to: "/friends", label: "Vrienden", icon: Users },
-  { to: "/leaderboard", label: "Klassement", icon: Medal },
-  { to: "/settings", label: "Instellingen", icon: Settings },
+  { to: "/dashboard", label: "Dashboard", short: "Home", icon: Home },
+  { to: "/schedule", label: "Speelschema", short: "Schema", icon: CalendarDays },
+  { to: "/groups", label: "Poules", short: "Poules", icon: BarChart3 },
+  { to: "/knockout", label: "Knock-out", short: "Knock-out", icon: Swords },
+  { to: "/countries", label: "Landen & Selecties", short: "Landen", icon: Flag },
+  { to: "/pool", label: "Pool", short: "Pool", icon: Trophy },
+  { to: "/friends", label: "Vrienden", short: "Vrienden", icon: Users },
+  { to: "/leaderboard", label: "Klassement", short: "Klassem.", icon: Medal },
+  { to: "/settings", label: "Instellingen", short: "Meer", icon: Settings },
 ];
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -39,7 +40,7 @@ export const Navigation = () => (
       </nav>
     </aside>
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-stadion-950/90 px-2 py-2 backdrop-blur-xl lg:hidden">
-      <div className="grid grid-cols-8 gap-1">
+      <div className="grid grid-cols-9 gap-1">
         {items.map((item) => (
           <NavLink
             key={item.to}
@@ -51,7 +52,7 @@ export const Navigation = () => (
             }
           >
             <item.icon size={19} />
-            <span className="mt-1 hidden sm:block">{item.label}</span>
+            <span className="mt-1 hidden sm:block">{item.short}</span>
           </NavLink>
         ))}
       </div>

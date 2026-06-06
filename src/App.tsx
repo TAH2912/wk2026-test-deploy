@@ -4,6 +4,7 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { FriendsPage } from "./pages/FriendsPage";
 import { GroupStandingsPage } from "./pages/GroupStandingsPage";
 import { KnockoutPage } from "./pages/KnockoutPage";
+import { CountriesPage } from "./pages/CountriesPage";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
 import { PredictionPoolPage } from "./pages/PredictionPoolPage";
 import { SchedulePage } from "./pages/SchedulePage";
@@ -21,6 +22,7 @@ export const App = () => {
         <Route path="/schedule" element={<SchedulePage data={data} />} />
         <Route path="/groups" element={<GroupStandingsPage data={data} />} />
         <Route path="/knockout" element={<KnockoutPage data={data} />} />
+        <Route path="/countries" element={<CountriesPage data={data} />} />
         <Route path="/pool" element={<PredictionPoolPage data={data} />} />
         <Route path="/friends" element={<FriendsPage data={data} />} />
         <Route path="/leaderboard" element={<LeaderboardPage data={data} />} />

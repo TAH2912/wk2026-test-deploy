@@ -1,7 +1,8 @@
 import scheduleData from "./worldcup_nl.json";
 import teamsData from "./worldcup_teams.json";
 import groupsData from "./worldcup_groups.json";
-import type { Group, Match, Stage, Team } from "../types";
+import squadsData from "./worldcup_squads.json";
+import type { Group, Match, Player, PlayerPosition, Squad, Stage, Team } from "../types";
 import { parseDutchDateTimeToDate } from "../utils/date";
 
 type RawMatch = {
@@ -106,6 +107,52 @@ export const mapWorldCupGroups = (input: unknown = groupsData): Group[] => {
   });
 };
 
+type RawPlayer = {
+  name?: string;
+  position?: string;
+  club?: string;
+  caps?: number;
+  goals?: number;
+};
+
+type RawSquad = {
+  team?: string;
+  confederation?: string;
+  group?: string;
+  squad_size?: number;
+  players?: RawPlayer[];
+};
+
+const POSITIONS: PlayerPosition[] = ["GK", "DF", "MF", "FW"];
+
+const normalizePosition = (value?: string): PlayerPosition => {
+  const upper = (value ?? "").toUpperCase();
+  return (POSITIONS as string[]).includes(upper) ? (upper as PlayerPosition) : "MF";
+};
+
+export const mapWorldCupSquads = (input: unknown = squadsData): Squad[] => {
+  const teams = (input as { teams?: RawSquad[] }).teams ?? [];
+  return teams.map((squad) => {
+    const players: Player[] = (squad.players ?? []).map((player) => ({
+      name: player.name ?? "Onbekende speler",
+      position: normalizePosition(player.position),
+      club: player.club ?? "Onbekende club",
+      caps: typeof player.caps === "number" ? player.caps : 0,
+      goals: typeof player.goals === "number" ? player.goals : 0,
+    }));
+    const team = squad.team ?? "Onbekend team";
+    return {
+      id: slug(team),
+      team,
+      confederation: squad.confederation,
+      group: squad.group,
+      squadSize: squad.squad_size ?? players.length,
+      players,
+    };
+  });
+};
+
 export const baseMatches = mapWorldCupScheduleToMatches();
 export const baseTeams = mapWorldCupTeams();
 export const baseGroups = mapWorldCupGroups();
+export const baseSquads = mapWorldCupSquads();
