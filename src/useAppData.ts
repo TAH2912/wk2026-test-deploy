@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { baseGroups, baseMatches, baseSquads, baseTeams } from "./data/mappers";
 import type { Friend, Match, MatchOverride, PredictionPool } from "./types";
 import { mergeMatchOverrides } from "./utils/matches";
+import { resolveKnockoutTeams } from "./utils/knockout";
 import { fetchAllResults, type AutoResults } from "./utils/autoResults";
 import {
   clearAppStorage,
@@ -55,10 +56,11 @@ export const useAppData = () => {
   }, [toast]);
 
   // Lagen: basisdata → automatische uitslagen → handmatige invoer (handmatig wint altijd).
-  const matches = useMemo(
-    () => mergeMatchOverrides(mergeMatchOverrides(baseMatches, autoResults), matchOverrides),
-    [autoResults, matchOverrides],
-  );
+  // Daarna worden knock-out-placeholders (1A, 2B, 3A/B/.., W73, L101) ingevuld met echte teams.
+  const matches = useMemo(() => {
+    const merged = mergeMatchOverrides(mergeMatchOverrides(baseMatches, autoResults), matchOverrides);
+    return resolveKnockoutTeams(merged, baseGroups);
+  }, [autoResults, matchOverrides]);
 
   // Refs zodat de poll-timer altijd de actuele waarden ziet zonder opnieuw op te zetten.
   const autoResultsRef = useRef(autoResults);

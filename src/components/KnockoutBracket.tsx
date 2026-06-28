@@ -1,6 +1,7 @@
 import type { Match } from "../types";
 import { formatDutchDate, formatDutchTime } from "../utils/date";
 import { getMatchWinner, stageLabel, teamDisplayLabel } from "../utils/matches";
+import { teamFlag } from "../utils/teams";
 
 const rounds: Match["stage"][] = ["round-of-32", "round-of-16", "quarter-final", "semi-final", "third-place", "final"];
 
@@ -38,7 +39,10 @@ export const KnockoutBracket = ({ matches }: { matches: Match[] }) => (
 
 const TeamLine = ({ team, score, active }: { team: string; score?: number; active?: boolean }) => (
   <div className={`mb-1 flex items-center justify-between rounded-xl px-3 py-2 ${active ? "bg-oranje-500/20 text-oranje-100" : "bg-black/20 text-slate-100"}`}>
-    <span className="truncate text-sm font-black">{teamDisplayLabel(team)}</span>
+    <span className="flex min-w-0 items-center gap-1.5">
+      {teamFlag(team) ? <span className="shrink-0 text-base leading-none">{teamFlag(team)}</span> : null}
+      <span className="truncate text-sm font-black">{teamDisplayLabel(team)}</span>
+    </span>
     <span className="ml-2 font-black">{score ?? "-"}</span>
   </div>
 );
