@@ -3,7 +3,7 @@ import { baseGroups, baseMatches, baseSquads, baseTeams } from "./data/mappers";
 import type { Friend, Match, MatchOverride, PredictionPool } from "./types";
 import { mergeMatchOverrides } from "./utils/matches";
 import { resolveKnockoutTeams } from "./utils/knockout";
-import { fetchAllResults, type AutoResults } from "./utils/autoResults";
+import { fetchAllResults, fetchCommittedResults, type AutoResults } from "./utils/autoResults";
 import {
   clearAppStorage,
   loadAutoResults,
@@ -87,6 +87,17 @@ export const useAppData = () => {
     } finally {
       setSyncing(false);
     }
+  }, []);
+
+  // Het meegeleverde vangnet altijd inladen bij opstart (ook als auto-sync uit staat),
+  // zodat de bracket compleet is — onafhankelijk van een (mogelijk trage/falende) live-fetch.
+  useEffect(() => {
+    void (async () => {
+      const committed = await fetchCommittedResults();
+      if (Object.keys(committed).length > 0) {
+        setAutoResults((previous) => ({ ...previous, ...committed }));
+      }
+    })();
   }, []);
 
   // Eerste sync bij openen + slim pollen tijdens wedstrijdvensters, zolang auto-sync aanstaat.
