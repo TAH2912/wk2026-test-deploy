@@ -17,7 +17,7 @@ type RawOpenFootballMatch = {
   team2?: string;
   group?: string;
   ground?: string;
-  score?: { ft?: number[]; ht?: number[] };
+  score?: { ft?: number[]; ht?: number[]; pen?: number[]; p?: number[] };
   score1?: number;
   score2?: number;
 };
@@ -29,6 +29,9 @@ export type AutoResult = {
   homeScore: number;
   awayScore: number;
   status: Extract<MatchStatus, "finished">;
+  /** Strafschoppen, indien het duel daarop is beslist. */
+  homePens?: number;
+  awayPens?: number;
 };
 
 export type AutoResults = Record<string, AutoResult>;
@@ -64,15 +67,27 @@ const buildBaseIndex = () => {
 
 const { byNum, byPair } = buildBaseIndex();
 
-const extractFullTime = (raw: RawOpenFootballMatch): [number, number] | null => {
-  const ft = raw.score?.ft;
-  if (Array.isArray(ft) && ft.length === 2 && typeof ft[0] === "number" && typeof ft[1] === "number") {
-    return [ft[0], ft[1]];
+const asPair = (value?: number[]): [number, number] | null =>
+  Array.isArray(value) && value.length === 2 && typeof value[0] === "number" && typeof value[1] === "number"
+    ? [value[0], value[1]]
+    : null;
+
+const extractFullTime = (raw: RawOpenFootballMatch): [number, number] | null =>
+  asPair(raw.score?.ft) ??
+  (typeof raw.score1 === "number" && typeof raw.score2 === "number" ? [raw.score1, raw.score2] : null);
+
+const extractPens = (raw: RawOpenFootballMatch): [number, number] | null =>
+  asPair(raw.score?.pen) ?? asPair(raw.score?.p);
+
+/** Bouwt een AutoResult; bij `swap` worden score én strafschoppen omgedraaid. */
+const buildResult = (ft: [number, number], pens: [number, number] | null, swap: boolean): AutoResult => {
+  const [home, away] = swap ? [ft[1], ft[0]] : ft;
+  const result: AutoResult = { homeScore: home, awayScore: away, status: "finished" };
+  if (pens) {
+    result.homePens = swap ? pens[1] : pens[0];
+    result.awayPens = swap ? pens[0] : pens[1];
   }
-  if (typeof raw.score1 === "number" && typeof raw.score2 === "number") {
-    return [raw.score1, raw.score2];
-  }
-  return null;
+  return result;
 };
 
 /** Zet een OpenFootball-bestand om naar { onze-match-id → eindstand }. Alleen wedstrijden met een eindstand. */
@@ -83,23 +98,23 @@ export const parseOpenFootball = (data: unknown): AutoResults => {
   for (const raw of matches) {
     const ft = extractFullTime(raw);
     if (!ft) continue;
+    const pens = extractPens(raw);
 
     if (raw.num != null) {
       const id = byNum.get(raw.num);
-      if (id) out[id] = { homeScore: ft[0], awayScore: ft[1], status: "finished" };
+      if (id) out[id] = buildResult(ft, pens, false);
       continue;
     }
 
     if (raw.team1 && raw.team2) {
       const direct = byPair.get(pairKey(raw.team1, raw.team2));
       if (direct) {
-        out[direct] = { homeScore: ft[0], awayScore: ft[1], status: "finished" };
+        out[direct] = buildResult(ft, pens, false);
         continue;
       }
       const swapped = byPair.get(pairKey(raw.team2, raw.team1));
       if (swapped) {
-        // teams in omgekeerde volgorde gevonden → score meedraaien
-        out[swapped] = { homeScore: ft[1], awayScore: ft[0], status: "finished" };
+        out[swapped] = buildResult(ft, pens, true); // teams omgekeerd → alles meedraaien
       }
     }
   }

@@ -53,6 +53,16 @@ const getStage = (raw: RawMatch): Stage => {
 
 const cleanTime = (time?: string) => (time ?? "00:00").replace(/\s*\(NL\)\s*/i, "");
 
+// Finale en troostfinale hebben in de bron geen nummer, maar OpenFootball kent ze als 103/104.
+// Door ze hetzelfde nummer te geven, kunnen hun uitslagen ook automatisch worden opgehaald.
+const inferNum = (raw: RawMatch): number | undefined => {
+  if (raw.num != null) return raw.num;
+  const round = (raw.round ?? "").toLowerCase();
+  if (round.includes("third")) return 103;
+  if (round.includes("final")) return 104;
+  return undefined;
+};
+
 export const mapWorldCupScheduleToMatches = (input: unknown = scheduleData): Match[] => {
   const matches = (input as { matches?: RawMatch[] }).matches ?? [];
 
@@ -62,11 +72,12 @@ export const mapWorldCupScheduleToMatches = (input: unknown = scheduleData): Mat
       const time = cleanTime(raw.time);
       const parsed = parseDutchDateTimeToDate(date, time);
       const roundLabel = raw.round ?? (raw.group ? "Groepsfase" : "Wedstrijd");
-      const id = raw.num ? `match-${raw.num}` : `match-${index + 1}-${slug(`${date}-${time}-${raw.team1}-${raw.team2}`)}`;
+      const num = inferNum(raw);
+      const id = num ? `match-${num}` : `match-${index + 1}-${slug(`${date}-${time}-${raw.team1}-${raw.team2}`)}`;
 
       return {
         id,
-        num: raw.num,
+        num,
         dateTimeLocal: parsed.toISOString(),
         homeTeam: raw.team1 ?? "Onbekend",
         awayTeam: raw.team2 ?? "Onbekend",

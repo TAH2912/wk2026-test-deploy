@@ -22,6 +22,9 @@ export type Match = {
   status: MatchStatus;
   homeScore?: number;
   awayScore?: number;
+  /** Strafschoppen (alleen knock-out bij gelijkspel na de reguliere tijd). */
+  homePens?: number;
+  awayPens?: number;
   venue?: string;
   city?: string;
   winner?: string;

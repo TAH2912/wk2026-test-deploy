@@ -27,6 +27,11 @@ export const getMatchWinner = (match: Match) => {
   if (match.homeScore === undefined || match.awayScore === undefined) return undefined;
   if (match.homeScore > match.awayScore) return match.homeTeam;
   if (match.awayScore > match.homeScore) return match.awayTeam;
+  // Gelijkspel → beslist op strafschoppen (knock-out).
+  if (match.homePens != null && match.awayPens != null) {
+    if (match.homePens > match.awayPens) return match.homeTeam;
+    if (match.awayPens > match.homePens) return match.awayTeam;
+  }
   return undefined;
 };
 
