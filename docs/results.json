@@ -2512,6 +2512,45 @@
     },
     {
       "round": "Round of 32",
+      "num": 74,
+      "date": "2026-06-29",
+      "time": "16:30 UTC-4",
+      "team1": "Germany",
+      "team2": "Paraguay",
+      "score": {
+        "p": [
+          3,
+          4
+        ],
+        "et": [
+          1,
+          1
+        ],
+        "ft": [
+          1,
+          1
+        ],
+        "ht": [
+          0,
+          1
+        ]
+      },
+      "goals1": [
+        {
+          "name": "Kai Havertz",
+          "minute": "54"
+        }
+      ],
+      "goals2": [
+        {
+          "name": "Julio Enciso",
+          "minute": "42"
+        }
+      ],
+      "ground": "Boston (Foxborough)"
+    },
+    {
+      "round": "Round of 32",
       "num": 76,
       "date": "2026-06-29",
       "time": "12:00 UTC-5",
