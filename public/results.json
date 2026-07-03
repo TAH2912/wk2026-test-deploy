@@ -2646,12 +2646,12 @@
           "minute": "45"
         },
         {
-          "name": "Bradley Barcola",
-          "minute": "53"
-        },
-        {
           "name": "Kylian Mbappé",
           "minute": "74"
+        },
+        {
+          "name": "Bradley Barcola",
+          "minute": "53"
         }
       ],
       "goals2": [],
@@ -2894,12 +2894,12 @@
           "minute": "36"
         },
         {
-          "name": "Pedro Porro",
-          "minute": "66"
-        },
-        {
           "name": "Mikel Oyarzabal",
           "minute": "89"
+        },
+        {
+          "name": "Pedro Porro",
+          "minute": "66"
         }
       ],
       "goals2": [],
