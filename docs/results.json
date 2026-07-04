@@ -3051,6 +3051,33 @@
     },
     {
       "round": "Round of 16",
+      "num": 89,
+      "date": "2026-07-04",
+      "time": "17:00 UTC-4",
+      "team1": "Paraguay",
+      "team2": "France",
+      "score": {
+        "ft": [
+          0,
+          1
+        ],
+        "ht": [
+          0,
+          0
+        ]
+      },
+      "goals1": [],
+      "goals2": [
+        {
+          "name": "Kylian Mbappé",
+          "minute": "70",
+          "penalty": true
+        }
+      ],
+      "ground": "Philadelphia"
+    },
+    {
+      "round": "Round of 16",
       "num": 90,
       "date": "2026-07-04",
       "time": "12:00 UTC-5",
