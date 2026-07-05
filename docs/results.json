@@ -3109,6 +3109,42 @@
         }
       ],
       "ground": "Houston"
+    },
+    {
+      "round": "Round of 16",
+      "num": 91,
+      "date": "2026-07-05",
+      "time": "16:00 UTC-4",
+      "team1": "Brazil",
+      "team2": "Norway",
+      "score": {
+        "ft": [
+          1,
+          2
+        ],
+        "ht": [
+          0,
+          0
+        ]
+      },
+      "goals1": [
+        {
+          "name": "Neymar",
+          "minute": "90+10",
+          "penalty": true
+        }
+      ],
+      "goals2": [
+        {
+          "name": "Erling Haaland",
+          "minute": "79"
+        },
+        {
+          "name": "Erling Haaland",
+          "minute": "90"
+        }
+      ],
+      "ground": "New York/New Jersey (East Rutherford)"
     }
   ]
 }
